@@ -1,0 +1,32 @@
+name: Deploy to Spidyhost
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          server: 's3638.use1.stableserver.net'
+          username: 'sync-space@ss.htbusinessgroup.in'
+          password: 'j;*$%1YiZMb&o?4l'
+          protocol: ftp                # agar nahi chale to ftps ya sftp try karna
+          port: 21
+          local-dir: './'              # repo root
+          server-dir: '/public_html/'  # Spidyhost ka docroot
+          exclude: |
+            **/.git*
+            **/.github/**
+            wp-config.php
+            wp-content/uploads/**
+            wp-content/cache/**
+            wp-content/upgrade/**
+            *.log
+            .env
